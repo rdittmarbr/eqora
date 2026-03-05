@@ -1,0 +1,30 @@
+services:
+  client:
+    image: node:20-alpine
+    container_name: eqora_${SERVER_TYPE:-development}_client
+    restart: unless-stopped
+    working_dir: /workspace/app_client
+    volumes:
+      - ./app_client:/workspace/app_client
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: ${API_BASE_URL}
+      NODE_ENV: ${NODE_ENV:-development}
+    expose:
+      - "3000"
+    networks:
+      - back_net
+
+  admin:
+    image: node:22-alpine
+    container_name: eqora_${SERVER_TYPE:-development}_admin
+    restart: unless-stopped
+    working_dir: /workspace/app_admin
+    volumes:
+      - ./app_admin:/workspace/app_admin
+    environment:
+      VITE_API_BASE_URL: ${VITE_API_BASE_URL:-${API_BASE_URL}}
+      NODE_ENV: ${NODE_ENV:-development}
+    expose:
+      - "3000"
+    networks:
+      - back_net

@@ -1,0 +1,51 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 4
+
+# Markdown: manter espaços em branco
+[*.md]
+trim_trailing_whitespace = false
+
+# YAML: indentação de 2 espaços
+[*.{yml,yaml}]
+indent_size = 2
+
+# Docker Compose
+[docker-compose.yml]
+indent_size = 4
+
+# PHP / Laravel
+[*.php]
+indent_style = space
+indent_size = 4
+
+# Vue.js, JS, TS, JSON, HTML (Node.js front)
+[*.{vue,js,ts,json,html}]
+indent_style = space
+indent_size = 2
+
+# CSS / SCSS
+[*.{css,scss}]
+indent_style = space
+indent_size = 2
+
+# bash sh
+[*.sh]
+indent_style = space
+indent_size = 2
+
+# Node.js config files (package.json, .eslintrc.json, etc.)
+[{package.json,*.eslintrc.json,*.prettierrc.json,*.babelrc}]
+indent_style = space
+indent_size = 2
+
+# Python
+[*.py]
+indent_style = space
+indent_size = 4

@@ -1,0 +1,29 @@
+services:
+  web_mobile:
+    image: node:20-alpine
+    container_name: eqora_${SERVER_TYPE:-development}_web_mobile
+    restart: unless-stopped
+    working_dir: /workspace/app_mobile
+    volumes:
+      - ./app_mobile:/workspace/app_mobile
+    environment:
+      EXPO_PUBLIC_SERVER_TYPE: ${SERVER_TYPE}
+      NODE_ENV: ${NODE_ENV:-development}
+    expose:
+      - "19006"
+    networks:
+      - back_net
+
+  web_mobile_build:
+    image: node:20-alpine
+    container_name: eqora_${SERVER_TYPE:-development}_web_mobile_build
+    working_dir: /workspace/app_mobile
+    volumes:
+      - ./app_mobile:/workspace/app_mobile
+    environment:
+      EXPO_PUBLIC_SERVER_TYPE: ${SERVER_TYPE}
+      NODE_ENV: production
+    command: sh -lc "npm install && npx expo export --platform web"
+    profiles: ["build"]
+    networks:
+      - back_net

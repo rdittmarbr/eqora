@@ -1,0 +1,14 @@
+services:
+
+  nginx:
+    ports:
+      - "${PORT_NGINX:-8000}:80"
+
+  client:
+    command: sh -lc "npm install && npm run build && npm run start -- -H 0.0.0.0 -p 3000"
+
+  admin:
+    command: sh -lc "npm install && npm run build && npm run preview -- --host 0.0.0.0 --port 3000"
+
+  web_mobile:
+    command: sh -lc "npm install && npx expo export --platform web && npx serve dist -l 19006"

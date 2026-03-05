@@ -1,0 +1,36 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+      args:
+        PHP_VERSION: ${PHP_VERSION:-8.3}
+    container_name: eqora_${SERVER_TYPE:-development}_api
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./app_api:/var/www/html:cached
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      APP_ENV: ${APP_ENV}
+      APP_DEBUG: ${APP_DEBUG}
+      APP_URL: ${APP_URL}
+      DB_CONNECTION: pgsql
+      DB_HOST: db
+      DB_PORT: ${PORT_DB}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      REDIS_HOST: redis
+      REDIS_PORT: ${PORT_REDIS}
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    expose:
+      - "${PORT_API}"
+    command: sh -lc "php artisan serve --host=0.0.0.0 --port=${PORT_API}"
+    networks:
+      - back_net
+      - db_net

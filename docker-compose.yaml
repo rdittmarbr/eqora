@@ -1,0 +1,7 @@
+networks:
+  back_net:
+  db_net:
+
+volumes:
+  pgdata:
+    name: "pgdata_${SERVER_TYPE:-development}"

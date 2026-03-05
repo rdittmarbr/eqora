@@ -1,0 +1,49 @@
+services:
+  client:
+    command: sh -lc "npm install && npm run build && npm run start -- -H 0.0.0.0 -p 3000"
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: ${API_BASE_URL}
+      NEXT_PUBLIC_NODE_ENV: ${APP_ENV:-development}
+
+  admin:
+    command: sh -lc "npm install && npm run build && npm run preview -- --host 0.0.0.0 --port 3000"
+    environment:
+      VITE_API_BASE_URL: ${VITE_API_BASE_URL:-${API_BASE_URL}}
+      VITE_NODE_ENV: ${APP_ENV:-development}
+
+  web_build:
+    image: node:20-alpine
+    container_name: eqora_${SERVER_TYPE:-development}_web_build
+    working_dir: /workspace/app_client
+    volumes:
+      - ./app_client:/workspace/app_client
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: ${API_BASE_URL}
+      NODE_ENV: production
+    command: sh -lc "npm install && npm run build"
+    profiles: ["build"]
+    networks:
+      - back_net
+
+  admin_build:
+    image: node:22-alpine
+    container_name: eqora_${SERVER_TYPE:-development}_admin_build
+    working_dir: /workspace/app_admin
+    volumes:
+      - ./app_admin:/workspace/app_admin
+    environment:
+      VITE_API_BASE_URL: ${VITE_API_BASE_URL:-${API_BASE_URL}}
+      NODE_ENV: production
+    command: sh -lc "npm install && npm run build"
+    profiles: ["build"]
+    networks:
+      - back_net
+
+  web_mobile:
+    command: sh -lc "npm install && npx expo export --platform web && npx serve dist -l 19006"
+
+  nginx:
+    volumes:
+      - ./app_client:/var/www/html/equora:ro
+    ports:
+      - "${PORT_NGINX:-8000}:80"

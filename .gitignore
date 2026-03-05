@@ -1,0 +1,17 @@
+# Projetos (clonados separadamente)
+app_api/
+app_client/
+app_admin/
+app-mobile/
+
+# Projetos legados/auxiliares presentes nesta raiz
+app_gateway/
+app_mobile/
+
+# Outros Arquivos
+backup/
+*.old
+.data/
+database/
+docs/
+app_admin.old/

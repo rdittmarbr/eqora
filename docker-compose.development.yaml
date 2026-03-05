@@ -1,0 +1,32 @@
+services:
+
+  nginx:
+    ports:
+      - "${PORT_NGINX:-8000}:80"
+
+  api:
+    ports:
+      - "${PORT_API:-8030}:8000"
+
+  client:
+    command: sh -lc "npm install && npm run dev -- --hostname 0.0.0.0 --port 3000"
+    ports:
+      - "${PORT_CLIENT:-8010}:3000"
+
+  admin:
+    command: sh -lc "npm install && npm run dev -- --host 0.0.0.0 --port 3000"
+    ports:
+      - "${PORT_ADMIN:-8020}:3000"
+
+  web_mobile:
+    command: sh -lc "npm install && npx expo start --web --host 0.0.0.0 --port 19006"
+    ports:
+      - "${PORT_WEB_MOBILE:-19006}:19006"
+
+  db:
+    ports:
+      - "${PORT_DB:-5432}:5432"
+
+  redis:
+    ports:
+      - "${PORT_REDIS:-6379}:6379"
